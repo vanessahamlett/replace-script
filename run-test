@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+
+from sys import argv
+from pathlib import Path
+import shutil
+
+if len(argv) < 2:
+  print('Invalid Usage.')
+  print('Proper Usage: ./run-test setup OR ./run-test teardown')
+  exit(1)
+
+if argv[1] == 'teardown':
+  testPath = Path.cwd() / 'test'
+  if testPath.exists():
+    shutil.rmtree(testPath)
+    print('The test directory has been removed.')
+  else:
+    print('The test directory does not currently exist.')
+
+elif argv[1] == 'set-up':
+  testPath = Path.cwd() / 'test'
+  if testPath.exists(): # remove the test dir if it exists previously
+    print('Old test directory currently exists, deleting it.')
+    shutil.rmtree(testPath)
+
+  # continue setting up with clean dir
+  testPath.mkdir()
+  eduPath = testPath / 'edu'
+  eduPath.mkdir()
+  bvuPath = eduPath / 'bvu'
+  bvuPath.mkdir()
+  csPath = bvuPath / 'cs'
+  csPath.mkdir()
+  
+  # create the java files with contents
+  with open(csPath / 'DevOps.java', 'w') as f:
+    f.write('// DevOps.java\n')
+    f.write('public class DevOps {\n')
+    f.write('\t public DevOps() {\n')
+    f.write('\t }\n')
+    f.write('}\n')
+  with open(csPath / 'DevOpsMain.java', 'w') as f:
+    f.write('// DevOpsMain.java\n')
+    f.write('public class DevOpsMain {\n')
+    f.write('\t public static void main(String[] args) {\n')
+    f.write('\t \t DevOps dev = new DevOps();\n')
+    f.write('\t }\n')
+    f.write('}\n')
+
+  print('Specified test directory and file contents created.')
+
+else:
+  print('Invalid Usage.')
+  print('Proper Usage: ./run-test setup OR ./run-test teardown')
+  exit(1)
+  
