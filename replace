@@ -6,13 +6,16 @@ import shutil
 import re
 
 def print_path(path, arg2, arg3):
-    #print(str(path.absolute()))
-    #print(str(path.absolute().name))
-
     if path.is_dir():
-
+        if path.absolute().name == arg2:
+            newDirName = re.sub(arg2, arg3, str(path.absolute().name))
+            newPath = path.absolute().parent / newDirName
+            shutil.copytree(path, newPath)
+            shutil.rmtree(path)
+            path = newPath
         for entry in path.iterdir():
             print_path(entry, arg2, arg3)
+
     else: # it is a file
         with open(path.absolute()) as f:
             newText=f.read().replace(arg2, arg3)
@@ -26,9 +29,7 @@ def print_path(path, arg2, arg3):
         if not newFilePath.exists():
             shutil.copy(path.absolute(), path.absolute().parent / newFile)
             path.absolute().unlink()
-        else:
-            print('A file by that new name already exists, remove it and run again.')
-        print(newFilePath.exists())
+
 
 if len(argv) < 4:
   print('Invalid Usage.')
