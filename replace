@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+from pathlib import Path
+from sys import argv
+import shutil
+import re
+
+def print_path(path, arg2, arg3):
+    #print(str(path.absolute()))
+    #print(str(path.absolute().name))
+
+    if path.is_dir():
+
+        for entry in path.iterdir():
+            print_path(entry, arg2, arg3)
+    else: # it is a file
+        with open(path.absolute()) as f:
+            newText=f.read().replace(arg2, arg3)
+
+        with open(path.absolute(), "w") as f:
+            f.write(newText)
+
+        newFile = re.sub(arg2, arg3, str(path.absolute().name))
+        # change the file name
+        newFilePath = path.absolute().parent / newFile
+        if not newFilePath.exists():
+            shutil.copy(path.absolute(), path.absolute().parent / newFile)
+            path.absolute().unlink()
+        else:
+            print('A file by that new name already exists, remove it and run again.')
+        print(newFilePath.exists())
+
+if len(argv) < 4:
+  print('Invalid Usage.')
+  print("Proper Usage: ./replace test 'DevOps' 'WebApp'")
+  exit(1)
+
+if argv[1] == 'test':
+    pstr = argv[1]
+
+    print_path(Path.cwd() / pstr, argv[2], argv[3])
+
+else:
+  print('Invalid Usage.')
+  print("Proper Usage: ./replace test 'DevOps' 'WebApp'")
+  exit(1)
+

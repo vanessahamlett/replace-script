@@ -3,6 +3,8 @@ A6 for DevOps Class
 
 
 replace:
+This is a Python script file. Used command 'chmod 700' for permissions.
+
 Usage:
 
 

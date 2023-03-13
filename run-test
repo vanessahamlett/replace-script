@@ -17,7 +17,7 @@ if argv[1] == 'teardown':
   else:
     print('The test directory does not currently exist.')
 
-elif argv[1] == 'set-up':
+elif argv[1] == 'setup':
   testPath = Path.cwd() / 'test'
   if testPath.exists(): # remove the test dir if it exists previously
     print('Old test directory currently exists, deleting it.')
